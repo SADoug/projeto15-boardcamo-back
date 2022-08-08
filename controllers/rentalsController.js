@@ -37,7 +37,7 @@ export async function getRentals(req, res) {
       `,
       rowMode: "array"
     }, params);
-
+    console.log(result.rows);
     res.send(result.rows.map(_mapRentalsArrayToObject));
   } catch (error) {
     console.log(error);
@@ -103,6 +103,7 @@ export async function finish(req, res) {
     if(rental.returnDate) return res.sendStatus(400); // bad request
     else {
       const diff = new Date().getTime() - new Date(rental.rentDate).getTime();
+      console.log(diff)
       const diffInDays = Math.floor(diff / (24 * 3600 * 1000));
 
       let delayFee = 0;
@@ -112,7 +113,6 @@ export async function finish(req, res) {
         console.log("delayFee", addicionalDays);
       };
 
-      
       await db.query(`
         UPDATE rentals 
         SET "returnDate" = NOW(), "delayFee" = $1
@@ -139,6 +139,8 @@ export async function deleteRental(req, res) {
       if(!rental.returnDate) res.sendStatus(400); // bad request
       else {
         await db.query(`DELETE FROM rentals WHERE id = $1`, [id]);
+       res.sendStatus(200); 
+
       }
     }
   } catch(error) {

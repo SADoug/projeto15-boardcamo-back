@@ -9,7 +9,9 @@ export async function getCustomers(req, res) {
 
     if (cpf) {
       params.push(`${cpf}%`);
+      console.log(params);
       whereClause += `WHERE cpf ILIKE $${params.length}`; // case insenstive
+      console.log(whereClause);
     }
 
     const result = await db.query(`

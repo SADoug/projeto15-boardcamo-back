@@ -2,7 +2,7 @@ import db from "../config/db.js";
 
 export async function getGames(req, res) {
   const { name } = req.query;
-
+  console.log("cheguei aqui")
   try {
     const params = [];
     let whereClause = '';
